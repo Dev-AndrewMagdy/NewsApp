@@ -7,6 +7,7 @@ import com.news.task.newsapp.domain.utils.Resource
 import com.news.task.newsapp.presentation.intent.ArticleIntent
 import com.news.task.newsapp.presentation.viewstate.ArticleViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,7 +26,7 @@ class NewsArticleViewModel @Inject constructor(private val getNewsArticleUseCase
     private val dataIntent = Channel<ArticleIntent>(Channel.UNLIMITED)
 
     fun handleIntent(loadNewsArticle: ArticleIntent) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             dataIntent.send(loadNewsArticle)
             dataIntent.consumeAsFlow().collect {
                 when (it) {

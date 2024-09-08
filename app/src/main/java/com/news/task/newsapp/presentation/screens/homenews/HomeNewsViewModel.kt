@@ -15,6 +15,7 @@ import com.news.task.newsapp.domain.utils.Resource
 import com.news.task.newsapp.presentation.intent.HomeNewsIntent
 import com.news.task.newsapp.presentation.viewstate.HomeNewsState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -49,7 +50,7 @@ class HomeNewsViewModel @Inject constructor(
     }
 
     fun handleIntent(intent: HomeNewsIntent) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             when (intent) {
                 is HomeNewsIntent.SelectCountry -> selectCountry(intent.country)
                 is HomeNewsIntent.SelectCategory -> selectCategory(intent.category)
